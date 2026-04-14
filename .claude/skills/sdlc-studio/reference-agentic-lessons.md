@@ -71,7 +71,12 @@ Without explicit exclusions, agents drift into neighbouring stories' scope. They
 
 Agents that read existing code before writing new code produce dramatically better results. Agents that don't read first invent their own patterns, leading to inconsistent code that fails typecheck or doesn't match the project's conventions.
 
-List 5-10 files with what to look for in each. Prioritise:
+**Derive the list from the repo map, not from memory.** Run
+`scripts/repo_map.py query --story <story-path> --top 10` first and
+use the output as the starting file set. Human memory is unreliable on
+codebases above 10 kloc; the indexer is not. See
+`reference-repo-map.md` for details. Then prune and augment by
+judgment to prioritise:
 
 1. The module being extended (for API patterns)
 2. A similar page/component (for UI patterns)

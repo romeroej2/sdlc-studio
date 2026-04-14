@@ -983,7 +983,13 @@ Every agentic implementation prompt MUST contain these sections in this order:
 ### READ THESE FILES FIRST
 {Numbered list of existing files the agent must read before writing anything.
 Include what to look for in each file. This is the most important section -
-it establishes the patterns the agent must follow.}
+it establishes the patterns the agent must follow.
+**Populate this list from the repo map, not from memory.** Run
+`scripts/repo_map.py query --story <story-path> --top 10` first and
+use the output as the starting file set. Prune obvious false positives
+and add any files the indexer missed (hub files, shared types, schema
+definitions). If the repo map is absent or older than an hour, rebuild
+first with `repo_map.py build`. See `reference-repo-map.md` for details.}
 
 1. `src/lib/bridge/client.ts` - BridgeClient class, Zod schema pattern, error handling
 2. `src/db/bridges.ts` - CRUD helper pattern (insertBridge, getBridge, etc.)

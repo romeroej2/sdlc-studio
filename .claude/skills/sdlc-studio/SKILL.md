@@ -121,6 +121,7 @@ Claude loads files progressively based on task needs:
 | Agentic execution | reference-agentic-lessons.md | reference-epic.md | - |
 | Change request workflow | help/cr.md | reference-cr.md | reference-outputs.md |
 | Invoking skill internals | reference-scripts.md | scripts/README.md | - |
+| Ranking files for a story | reference-repo-map.md | help/repo-map.md | reference-epic.md#agent-prompt-template |
 
 **Template structure:**
 
@@ -401,6 +402,14 @@ approach decisions.
 ### Utilities
 
 Skill-internal helpers live at `.claude/skills/sdlc-studio/scripts/`. Claude invokes these on behalf of workflows; users do not call them directly. See `reference-scripts.md` for the full catalogue.
+
+| Command | Description |
+| --- | --- |
+| `/sdlc-studio repo map build` | Index the repository symbols and imports |
+| `/sdlc-studio repo map build --ignore vendor` | Skip an extra directory during indexing |
+| `/sdlc-studio repo map query --story US0001` | Rank files by relevance to a story |
+| `/sdlc-studio repo map query --story "auth flow"` | Rank files by a free-text query |
+| `/sdlc-studio repo map stats` | Index size and top-10 hub files |
 
 ## Workflows
 

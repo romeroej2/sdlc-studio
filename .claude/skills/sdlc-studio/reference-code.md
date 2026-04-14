@@ -70,12 +70,30 @@ Detailed workflows for code planning, review, and quality checks.
    | 2 | Network timeout        | Retry 3x with exponential backoff | Phase 2 |
    ```
 
-6. **Explore Codebase**
-   Use Task tool with Explore agent to understand:
-   - Existing architecture patterns
+6. **Explore Codebase (Repo Map first, then agent)**
+   Before launching the Explore agent, seed a candidate file list
+   from the repository index. This is the `code plan` equivalent of
+   the Agent Prompt Template's `READ THESE FILES FIRST` discipline.
+
+   First, rank files with the repo map (rebuild if absent or older
+   than an hour):
+
+   ```bash
+   python3 .claude/skills/sdlc-studio/scripts/repo_map.py build
+   python3 .claude/skills/sdlc-studio/scripts/repo_map.py query \
+     --story sdlc-studio/stories/US{NNNN}-*.md --top 15
+   ```
+
+   Then use the Task tool with the Explore agent, anchored on the
+   repo map's top results, to understand:
+
+   - Existing architecture patterns (anchor on repo map hubs)
    - Similar implementations to reference
-   - Files likely to be modified
+   - Files likely to be modified (start from the repo map top-N)
    - Testing conventions
+
+   The Explore agent augments the repo map result; it does not
+   invent it. See `reference-repo-map.md` for scoring details.
 
 7. **Generate Implementation Plan**
    Use sequential thinking to plan implementation:
