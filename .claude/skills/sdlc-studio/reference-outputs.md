@@ -619,6 +619,7 @@ When a story reaches any **terminal status** (Done, Won't Implement, Deferred, S
 9. **Update downstream story dependency tables:** Search all story files (`sdlc-studio/stories/US*.md`) for dependency tables referencing this story. Update the Status column to match this story's terminal status. This prevents downstream stories from showing stale dependency statuses (e.g. "Draft" when the dependency is Done).
 10. **Tick test scenario checkboxes:** If the story has a `## Test Scenarios` section with `- [ ]` checkboxes, tick all items that have corresponding passing tests. Match by test description -- if a test file contains a test matching the scenario description, tick it (`- [ ]` → `- [x]`).
 11. **Cascade epic completion:** If step 5 resulted in the epic being marked Done (user confirmed), execute the **[Epic Completion Cascade](#epic-completion-cascade)** immediately. This cascades outward to PRD feature statuses, dependency tables in other epics, and all indexes.
+12. **Sync external integrations:** If the story file has a `> **GitHub Issue:**` field, invoke `scripts/github_sync.py push --type story` so the linked issue picks up the new status labels (`sdlc:status:done`). Epic/CR linkage is covered by their own cascades. See `reference-github-sync.md#gh-push` for semantics. This step is a no-op for projects that have not adopted sync.
 
 **Code paths that trigger this cascade:**
 

@@ -123,6 +123,7 @@ Claude loads files progressively based on task needs:
 | Invoking skill internals | reference-scripts.md | scripts/README.md | - |
 | Ranking files for a story | reference-repo-map.md | help/repo-map.md | reference-epic.md#agent-prompt-template |
 | Verifying ACs against codebase | reference-verify.md | help/verify.md | reference-reconcile.md#verify-scope |
+| Syncing CR/Story/Epic with GitHub | reference-github-sync.md | help/github-sync.md | reference-cr.md#cr-sync-workflow |
 
 **Template structure:**
 
@@ -333,6 +334,8 @@ approach decisions.
 | `/sdlc-studio cr list --priority P1` | List P1 change requests |
 | `/sdlc-studio cr action --cr CR-0001` | Turn CR into epics and stories |
 | `/sdlc-studio cr review` | Review CR statuses against implementation |
+| `/sdlc-studio cr sync` | Two-way sync CRs with GitHub Issues |
+| `/sdlc-studio cr sync --dry-run` | Preview sync without writes |
 | `/sdlc-studio cr close --cr CR-0001` | Mark CR complete/rejected/deferred |
 
 ### Development Pipeline
@@ -414,6 +417,21 @@ Skill-internal helpers live at `.claude/skills/sdlc-studio/scripts/`. Claude inv
 | `/sdlc-studio repo map query --story US0001` | Rank files by relevance to a story |
 | `/sdlc-studio repo map query --story "auth flow"` | Rank files by a free-text query |
 | `/sdlc-studio repo map stats` | Index size and top-10 hub files |
+
+### External Integrations
+
+Two-way sync between local records and external trackers. v1.6.0 ships GitHub Issues; Linear, Jira, and GitHub Projects board integration are deferred. Requires `gh` CLI installed and authenticated. See `reference-github-sync.md`.
+
+| Command | Description |
+| --- | --- |
+| `/sdlc-studio cr sync` | Push + pull CRs to/from GitHub Issues |
+| `/sdlc-studio story sync` | Push + pull Stories to/from GitHub Issues |
+| `/sdlc-studio project sync` | Sync all three types (cr, story, epic) |
+| `/sdlc-studio project sync push --type all` | Push only |
+| `/sdlc-studio project sync pull --type cr` | Pull only |
+| `/sdlc-studio project sync cascade` | Merged-PR cascade candidates |
+| `/sdlc-studio project sync cascade --since <iso>` | Limit PR window |
+| `/sdlc-studio project sync state` | Print sync state file |
 
 ## Workflows
 

@@ -12,6 +12,7 @@ Related: help/epic.md, reference-epic.md
 > **Reviewer:** {{reviewer}}
 > **Created:** {{created_date}}
 > **Target Release:** {{target_release}}
+> **GitHub Issue:** {{github_issue}}
 
 ## Summary
 
@@ -22,7 +23,7 @@ Related: help/epic.md, reference-epic.md
 > See PRD and TRD for full constraint details. Key constraints for this epic:
 
 | Source | Type | Constraint | Impact |
-|--------|------|------------|--------|
+| --- | --- | --- | --- |
 | PRD | Performance | {{prd_performance}} | {{performance_impact}} |
 | PRD | Security | {{prd_security}} | {{security_impact}} |
 | TRD | Architecture | {{trd_architecture}} | {{architecture_impact}} |
@@ -33,17 +34,19 @@ Related: help/epic.md, reference-epic.md
 ## Business Context
 
 ### Problem Statement
+
 {{problem_statement}}
 
 **PRD Reference:** [{{prd_section}}](../prd.md#{{prd_anchor}})
 
 ### Value Proposition
+
 {{value_proposition}}
 
 ### Success Metrics
 
 | Metric | Current | Target | Measurement |
-|--------|---------|--------|-------------|
+| --- | --- | --- | --- |
 | {{metric_name}} | {{current}} | {{target}} | {{method}} |
 
 ---
@@ -51,12 +54,15 @@ Related: help/epic.md, reference-epic.md
 ## Scope
 
 ### In Scope
+
 - {{in_scope_item}}
 
 ### Out of Scope
+
 - {{out_of_scope_item}}
 
 ### Affected Personas
+
 - **{{persona_name}}:** {{persona_impact}}
 
 ---
@@ -72,13 +78,13 @@ Related: help/epic.md, reference-epic.md
 ### Blocked By
 
 | Dependency | Type | Status | Owner |
-|------------|------|--------|-------|
+| --- | --- | --- | --- |
 | {{dependency}} | {{type}} | {{status}} | {{owner}} |
 
 ### Blocking
 
 | Item | Type | Impact |
-|------|------|--------|
+| --- | --- | --- |
 | {{blocking_item}} | {{type}} | {{impact}} |
 
 ---
@@ -86,12 +92,13 @@ Related: help/epic.md, reference-epic.md
 ## Risks & Assumptions
 
 ### Assumptions
+
 - {{assumption}}
 
 ### Risks
 
 | Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
+| --- | --- | --- | --- |
 | {{risk}} | {{likelihood}} | {{impact}} | {{mitigation}} |
 
 ---
@@ -99,9 +106,11 @@ Related: help/epic.md, reference-epic.md
 ## Technical Considerations
 
 ### Architecture Impact
+
 {{architecture_impact}}
 
 ### Integration Points
+
 {{integration_points}}
 
 ---
@@ -112,6 +121,7 @@ Related: help/epic.md, reference-epic.md
 **Estimated Story Count:** {{story_count}}
 
 **Complexity Factors:**
+
 - {{complexity_factor}}
 
 ---
@@ -137,5 +147,5 @@ Related: help/epic.md, reference-epic.md
 ## Revision History
 
 | Date | Author | Change |
-|------|--------|--------|
+| --- | --- | --- |
 | {{revision_date}} | {{revision_author}} | {{revision_change}} |

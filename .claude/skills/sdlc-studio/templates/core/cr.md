@@ -13,6 +13,7 @@ Related: help/cr.md, reference-cr.md
 > **Date:** {{date}}
 > **Affects:** {{affects}}
 > **Depends on:** {{depends_on}}
+> **GitHub Issue:** {{github_issue}}
 
 ## Summary
 

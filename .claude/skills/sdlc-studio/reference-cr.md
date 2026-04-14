@@ -291,6 +291,62 @@ This is the key workflow that bridges from CR to the epic/story pipeline.
 
 ---
 
+## /sdlc-studio cr sync - Step by Step {#cr-sync-workflow}
+
+Two-way sync between local Change Requests and GitHub Issues via
+the `gh` CLI. Delegates to `scripts/github_sync.py`. See
+`reference-github-sync.md` for the full design, label convention,
+and conflict policy.
+
+1. **Parse Arguments**
+   - `push` (default) | `pull` | `cascade` | `state` subcommand
+   - `--dry-run` for preview-only
+   - `--since <iso>` for `cascade`
+
+2. **Resolve gh CLI**
+   - Require `gh` on PATH; fail fast with install instructions if missing
+   - Sanity check `gh auth status` before first push
+
+3. **Ensure labels exist (first run only)**
+   - Required labels: `sdlc:cr`, `sdlc:status:*`, optional `sdlc:priority:*`, `sdlc:type:*`
+   - Create any missing labels via `gh label create`
+   - See `reference-github-sync.md#gh-setup` for the full list
+
+4. **Run push**
+   - For each CR without a `> **GitHub Issue:**` field, call
+     `github_sync.py push --type cr`
+   - The script creates the issue, writes the issue number back into
+     the local CR metadata block, and records the mapping in
+     `.local/github-sync-state.json`
+   - For CRs whose content hash has changed, labels are reconciled
+     (add missing, remove stale `sdlc:*`)
+
+5. **Run pull**
+   - Fetch issues labelled `sdlc:cr` via `github_sync.py pull`
+   - For each unlinked issue, emit a TODO pointing at
+     `/sdlc-studio cr create --from-issue <N>` so the user runs the
+     correct create workflow with template fields under review
+   - The script never invents template field values
+
+6. **Run cascade**
+   - `github_sync.py cascade` lists merged PRs since
+     `last_cascade_ref`, parses bodies for `Closes #N` /
+     `sdlc:story USNNNN` / `sdlc:cr CR-NNNN` references, and prints
+     candidates for the Story Completion Cascade
+   - User confirms before invoking `/sdlc-studio reconcile --story
+     <id>` to mark each record Done
+
+7. **Report**
+   - Print created, updated, TODO, cascade-candidate counts
+   - State file updated unless `--dry-run`
+
+**Conflict policy:** most-recently-updated wins, reported not
+auto-resolved. If both local and remote have changed since the last
+sync, the record is left untouched and a conflict line is printed.
+See `reference-github-sync.md#gh-conflict`.
+
+---
+
 ## /sdlc-studio cr close - Step by Step {#cr-close-workflow}
 
 1. **Parse Arguments**

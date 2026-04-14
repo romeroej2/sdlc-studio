@@ -11,6 +11,7 @@ Related: help/story.md, reference-story.md
 > **Owner:** {{owner}}
 > **Reviewer:** {{reviewer}}
 > **Created:** {{created_date}}
+> **GitHub Issue:** {{github_issue}}
 
 ## User Story
 
