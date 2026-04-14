@@ -21,10 +21,12 @@ Related: help/story.md, reference-story.md
 ## Context
 
 ### Persona Reference
+
 **{{persona_name}}** - {{persona_summary}}
 [Full persona details](../personas.md#{{persona_anchor}})
 
 ### Background
+
 {{background}}
 
 ---
@@ -34,7 +36,7 @@ Related: help/story.md, reference-story.md
 > See Epic for full constraint chain. Key constraints for this story:
 
 | Source | Type | Constraint | AC Implication |
-|--------|------|------------|----------------|
+| --- | --- | --- | --- |
 | Epic | {{epic_constraint_type}} | {{epic_constraint}} | {{constraint_ac}} |
 | PRD | Performance | {{performance_constraint}} | {{performance_ac}} |
 | PRD | Security | {{security_constraint}} | {{security_ac}} |
@@ -44,28 +46,39 @@ Related: help/story.md, reference-story.md
 ## Acceptance Criteria
 
 ### AC1: {{ac1_name}}
+
 - **Given** {{ac1_given}}
 - **When** {{ac1_when}}
 - **Then** {{ac1_then}}
+- **Verify:** {{ac1_verify}}
+- **Verified:** no
 
 ### AC2: {{ac2_name}}
+
 - **Given** {{ac2_given}}
 - **When** {{ac2_when}}
 - **Then** {{ac2_then}}
+- **Verify:** {{ac2_verify}}
+- **Verified:** no
 
 ### AC3: {{ac3_name}}
+
 - **Given** {{ac3_given}}
 - **When** {{ac3_when}}
 - **Then** {{ac3_then}}
+- **Verify:** {{ac3_verify}}
+- **Verified:** no
 
 ---
 
 ## Scope
 
 ### In Scope
+
 - {{in_scope_item}}
 
 ### Out of Scope
+
 - {{out_of_scope_item}}
 
 ---
@@ -75,9 +88,11 @@ Related: help/story.md, reference-story.md
 {{technical_notes}}
 
 ### API Contracts
+
 {{api_contracts}}
 
 ### Data Requirements
+
 {{data_requirements}}
 
 ---
@@ -85,7 +100,7 @@ Related: help/story.md, reference-story.md
 ## Edge Cases & Error Handling
 
 | Scenario | Expected Behaviour |
-|----------|-------------------|
+| --- | --- |
 | {{edge_case}} | {{expected_behaviour}} |
 
 > **Minimum edge cases:** {{config.story_quality.edge_cases.api}} for API stories, {{config.story_quality.edge_cases.other}} for others
@@ -105,13 +120,13 @@ Related: help/story.md, reference-story.md
 ### Story Dependencies
 
 | Story | Type | What's Needed | Status |
-|-------|------|---------------|--------|
+| --- | --- | --- | --- |
 | [US{{dep_story_id}}](US{{dep_story_id}}-{{dep_slug}}.md) | {{type}} | {{what_needed}} | {{status}} |
 
 ### External Dependencies
 
 | Dependency | Type | Status |
-|------------|------|--------|
+| --- | --- | --- |
 | {{dependency}} | {{dependency_type}} | {{dependency_status}} |
 
 ---
@@ -132,5 +147,5 @@ Related: help/story.md, reference-story.md
 ## Revision History
 
 | Date | Author | Change |
-|------|--------|--------|
+| --- | --- | --- |
 | {{revision_date}} | {{revision_author}} | {{revision_change}} |

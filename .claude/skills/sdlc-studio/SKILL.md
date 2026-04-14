@@ -122,6 +122,7 @@ Claude loads files progressively based on task needs:
 | Change request workflow | help/cr.md | reference-cr.md | reference-outputs.md |
 | Invoking skill internals | reference-scripts.md | scripts/README.md | - |
 | Ranking files for a story | reference-repo-map.md | help/repo-map.md | reference-epic.md#agent-prompt-template |
+| Verifying ACs against codebase | reference-verify.md | help/verify.md | reference-reconcile.md#verify-scope |
 
 **Template structure:**
 
@@ -254,6 +255,9 @@ approach decisions.
 | `/sdlc-studio reconcile --scope epics` | Reconcile epics only |
 | `/sdlc-studio reconcile --scope stories` | Reconcile stories only |
 | `/sdlc-studio reconcile --scope prd` | Reconcile PRD only |
+| `/sdlc-studio reconcile --verify` | Run AC verifiers and update Verified state |
+| `/sdlc-studio reconcile --verify --story US0001` | Verify a single story |
+| `/sdlc-studio reconcile --verify --dry-run` | Preview verification without writes |
 
 ### Requirements Pipeline
 

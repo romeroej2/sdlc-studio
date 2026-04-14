@@ -47,3 +47,10 @@ review:
     - critical      # Must address before merge
     - important     # Should address
     - suggestion    # Consider addressing
+
+# Executable acceptance-criteria verification
+# When true, the Story Completion Cascade refuses to mark a story Done
+# unless every AC reports Verified: yes. Adopt incrementally: leave
+# off while seeding Verify: lines, then enable once reconcile reports
+# manual: 0 for the whole repository. See reference-verify.md.
+require_ac_verification: false

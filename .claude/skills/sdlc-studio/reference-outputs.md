@@ -607,6 +607,7 @@ When a story reaches any **terminal status** (Done, Won't Implement, Deferred, S
 
 **Mandatory cascade steps:**
 
+0. **AC verification gate (if `require_ac_verification: true`):** Run `scripts/verify_ac.py run --story <path>` before ticking indexes. If any AC reports `Verified: no` or a failure, abort the cascade and leave the story In Progress. The gate is disabled by default; flip it in `templates/config-defaults.yaml` or a project-local `sdlc-studio/config.yaml`. See `reference-verify.md#verify-gate`.
 1. **Find and update plan:** Search `sdlc-studio/plans/` for the plan linked to this story. Update `> **Status:**` to the target status from the table above. Update `plans/_index.md` entry.
 2. **Find and update test spec:** Search `sdlc-studio/test-specs/` for the spec linked to this story. Update `> **Status:**` to the target status. Update `test-specs/_index.md` entry. For epic-scoped specs, see [Epic-Scoped Coverage](reference-test-spec.md#epic-scoped-coverage) - only cascade when ALL covered stories are terminal.
 3. **Find and update workflow:** Search `sdlc-studio/workflows/WF*` for the workflow linked to this story. Update `> **Status:**` to the target status. Update any non-terminal phase statuses.

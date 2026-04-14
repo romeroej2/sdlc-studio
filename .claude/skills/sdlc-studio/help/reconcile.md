@@ -58,6 +58,9 @@ Three-phase workflow: **collect ground truth** from artifact files, **detect dri
 | `--scope stories` | Only reconcile story-related artifacts | all |
 | `--scope prd` | Only reconcile PRD feature statuses | all |
 | `--scope crs` | Only reconcile change request index drift (report-only for completion cascade) | all |
+| `--scope verify` | Only run AC verifiers via scripts/verify_ac.py | all |
+| `--verify` | Shortcut for `--scope verify`; may be combined with `--story` | off |
+| `--story <path>` | Limit `--verify` to a single story file | none |
 | `--scope indexes` | Only reconcile index files and counts | all |
 
 ## Output

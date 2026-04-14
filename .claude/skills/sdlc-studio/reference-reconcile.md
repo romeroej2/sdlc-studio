@@ -110,6 +110,19 @@ h) CR status drift (if sdlc-studio/change-requests/ exists):
        add to change list as SUGGESTED FIX (never auto-apply -- requires user confirmation)
    Recalculate CR index summary counts from truth map:
      - Compare against _index.md Summary table → drift?
+
+i) AC verification drift (when --verify or --scope verify):
+   Delegate to scripts/verify_ac.py run for each story file in scope.
+   The runner:
+     - Parses - **Verify:** bullets under each AC
+     - Runs the verifier expression via its DSL (pytest, jest, file,
+       grep, http, shell, ...)
+     - Passing + Verified missing or no/stale: upgrade to yes
+     - Failing + Verified yes: downgrade to no (source of truth drift)
+     - Missing Verify: manual, reconcile does not touch
+   Writes sdlc-studio/.local/verify-report.json and returns non-zero
+   exit if any AC failed. The dry-run flag propagates to verify_ac.py.
+   Full DSL, report shape, and gated completion in reference-verify.md.
 ```
 
 ### 4. Phase 3: Report or Apply
@@ -182,6 +195,7 @@ When `--scope` is specified, only run the relevant subset of Phase 2 and Phase 3
 | `epics` | Epic index + dependency + checkbox drift | epics/_index.md + epic files |
 | `prd` | PRD feature status + AC drift | prd.md |
 | `crs` | CR index drift + CR status cascade (report-only for completion) | change-requests/_index.md |
+| `verify` | Run AC verifiers via scripts/verify_ac.py | story Verified: lines + verify-report.json |
 | `indexes` | All index drift (no file-level fixes) | All _index.md files |
 | (none) | All checks | All fixes |
 

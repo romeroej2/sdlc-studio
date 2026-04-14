@@ -51,6 +51,16 @@ Detailed workflows for User Story generation, quality enforcement, and managemen
      d. Identify edge cases
      e. Leave Story Points as {{TBD}}
      f. **Detect cross-story dependencies** (see step 3b)
+     g. **Emit best-effort `Verify:` lines.** For each AC, write a
+        Verify expression matching the AC intent:
+        - API story with HTTP contract -> `http METHOD /path -- <jq>`
+        - Behavioural unit test -> `pytest|jest|vitest <node_or_pattern>`
+        - File or symbol presence -> `file <path>` or `grep <regex> <path>`
+        - Nothing reasonable -> leave Verify line off (manual verification)
+        Mark `Verified: no` on every AC until reconcile runs. See
+        `reference-verify.md#verify-dsl` for the DSL table and
+        `reference-verify.md#verify-writing-good` for guidance on
+        writing verifiers that are deterministic, fast, and narrow.
 
 3b. **Detect Cross-Story Dependencies (MANDATORY)**
 
