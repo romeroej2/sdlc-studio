@@ -12,7 +12,7 @@ SDLC Studio is a Claude Code skill for managing the full software development li
 
 | Path | Purpose |
 | ------ | --------- |
-| `.claude/skills/sdlc-studio/SKILL.md` | Main entry point (651 lines) |
+| `.claude/skills/sdlc-studio/SKILL.md` | Main entry point / lean router (195 lines) |
 | `.claude/skills/sdlc-studio/reference-philosophy.md` | Create vs Generate modes - read first |
 | `.claude/skills/sdlc-studio/reference-doctrine.md` | Operating doctrine - onboard a Claude to any project (v1.7.0) |
 | `.claude/skills/sdlc-studio/reference-outputs.md` | Canonical story and epic completion cascades |
@@ -69,7 +69,7 @@ Manual verification:
 
 When modifying the skill:
 
-- **SKILL.md:** Main entry point (currently 651 lines). Delegate workflow detail to `reference-*.md` rather than inline it.
+- **SKILL.md:** Main entry point / lean router (currently 195 lines). It is the only always-loaded file, so keep it minimal: philosophy gates, the Progressive Loading Guide, and pointers. Delegate the command catalogue to `help/help.md`, flags to `help/arguments.md`, the reference index to `help/references.md`, and workflow detail to `reference-*.md` rather than inline it.
 - **New commands:** Add help file to `help/`, update SKILL.md tables
 - **New templates:** Add to `templates/`, update See Also section
 - **Workflows:** Update relevant `reference*.md` file

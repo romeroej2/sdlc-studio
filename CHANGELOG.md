@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.7.2] - 2026-06-05
 
-Extends the style guard to corporate jargon. No behaviour changes.
+Extends the style guard to corporate jargon, and restructures SKILL.md for
+token efficiency via progressive disclosure. No behaviour changes.
 
 ### Added
 
@@ -16,9 +17,18 @@ Extends the style guard to corporate jargon. No behaviour changes.
   permits lines documenting the rule itself, plus the established term
   "user journey". The em-dash check now lives in the same script, which
   `npm run lint:style` calls.
+- `help/arguments.md` (full flag reference) and `help/references.md` (the
+  reference-file and template catalogue), loaded on demand.
 
 ### Changed
 
+- **SKILL.md slimmed from 651 to 195 lines (~70%)** by relocating the
+  command catalogue, argument reference, workflow diagrams, and reference
+  index out of the always-loaded router into lazy-loaded `help/help.md`,
+  new `help/arguments.md`, and new `help/references.md`. This cuts the
+  per-invocation context cost with no feature loss: all 153 command
+  strings and 55 flags are verified present in the relocated files. The
+  Progressive Loading Guide gains routing rows for the new files.
 - Reworded two metaphorical jargon uses (operator-heuristics, lessons
   help) to plainer wording; these were not allowlist candidates.
 

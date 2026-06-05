@@ -8,6 +8,11 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent
 
 Manage project specifications and test artifacts. Supports the full pipeline from PRD creation through Epic decomposition, User Story generation, and streamlined test automation.
 
+This file is the always-loaded router. It carries only what is needed to route a request:
+philosophy gates, the Progressive Loading Guide, and pointers. The full command catalogue,
+argument reference, workflow diagrams, and reference index are loaded on demand from
+`help/help.md`, `help/arguments.md`, and `help/references.md`.
+
 ## Critical Philosophy (Read This First)
 
 **Two modes for every artifact type:**
@@ -28,58 +33,31 @@ Manage project specifications and test artifacts. Supports the full pipeline fro
 ## Quick Start
 
 ```bash
-/sdlc-studio help                    # Show command reference
+/sdlc-studio help                    # Full command reference (help/help.md)
 /sdlc-studio status                  # Check pipeline state and next steps
+/sdlc-studio hint                    # Single actionable next step
 /sdlc-studio review                  # Unified PRD/TRD/TSD/Persona review
 /sdlc-studio reconcile               # Fix all status drift in one pass
-/sdlc-studio upgrade --dry-run       # Preview schema upgrade
 /sdlc-studio prd generate            # Create PRD from codebase
-/sdlc-studio trd generate            # Create TRD from codebase
 /sdlc-studio epic                    # Generate Epics from PRD
 /sdlc-studio story                   # Generate Stories from Epics
-/sdlc-studio bug                     # Create or list bugs
-/sdlc-studio cr                      # Manage change requests
-/sdlc-studio rfc                     # Explore an unsettled design (pre-CR)
 /sdlc-studio code plan               # Plan implementation for story
 /sdlc-studio code implement          # Execute implementation plan
-/sdlc-studio code test               # Run tests with traceability
-/sdlc-studio code verify             # Verify code against AC
-/sdlc-studio code check              # Run linters and checks
-/sdlc-studio tsd                      # Create test strategy document
-/sdlc-studio test-spec               # Generate test specifications
-/sdlc-studio test-automation         # Generate executable tests
-/sdlc-studio story plan              # Create plan + test-spec, then review
 /sdlc-studio story implement         # Execute story workflow (all phases)
-/sdlc-studio epic plan               # Preview epic workflow (all stories)
 /sdlc-studio epic implement          # Execute epic workflow (all stories)
-/sdlc-studio project plan            # Preview project execution plan
 /sdlc-studio project implement       # Execute all epics in dependency order
 ```
+
+For the full catalogue (bug, cr, rfc, persona, consult, chat, trd, test-*, repo map,
+sync, and every flag), run `/sdlc-studio help` or read `help/help.md`.
 
 ## Get Help for Any Type
 
 ```bash
-/sdlc-studio {type} help             # Show help for specific type
+/sdlc-studio {type} help             # Type-specific commands, prerequisites, output, examples
 ```
 
-Examples:
-
-```bash
-/sdlc-studio prd help                # PRD commands and options
-/sdlc-studio epic help               # Epic generation help
-/sdlc-studio bug help                # Bug tracking help
-/sdlc-studio code help               # Code plan/test/verify/check help
-/sdlc-studio test-spec help          # Test specification help
-/sdlc-studio test-automation help    # Test automation help
-```
-
-Each help page shows:
-
-- Available actions and what they do
-- Prerequisites
-- Output format and location
-- Examples
-- Next steps
+Examples: `/sdlc-studio epic help`, `/sdlc-studio code help`, `/sdlc-studio bug help`.
 
 ## When to Use
 
@@ -110,7 +88,10 @@ Claude loads files progressively based on task needs:
 
 | Task Type | Primary Load | Secondary Load | Decision Load |
 | --- | --- | --- | --- |
-| Understanding command | help/{type}.md | - | - |
+| Understanding a command | help/{type}.md | - | - |
+| Full command catalogue | help/help.md | - | - |
+| Argument / flag reference | help/arguments.md | - | - |
+| Reference & template catalogue | help/references.md | - | - |
 | Create mode workflow | help/{type}.md | reference-{domain}.md | reference-philosophy.md#create-mode |
 | Generate mode workflow | reference-philosophy.md#generate-mode | help/{type}.md | reference-{domain}.md |
 | Creating artifacts | templates/core/{type}.md | reference-outputs.md | - |
@@ -169,56 +150,7 @@ Reference files follow the pattern `reference-{domain}.md`. When executing
 a workflow, load the reference file matching the artifact type being created
 or modified. Cross-domain files (`reference-decisions.md`, `reference-outputs.md`,
 `reference-philosophy.md`) load as needed for validation, status updates, and
-approach decisions.
-
-## Arguments
-
-| Argument | Description | Default |
-| --- | --- | --- |
-| `type` | See Type Reference below | Required |
-| `action` | create, generate, review, plan, verify, check, list, fix, close, accept, propose, **help** | varies |
-| `--output` | Output path (file or directory) | varies by type |
-| `--prd` | PRD file path (for epic) | sdlc-studio/prd.md |
-| `--epic` | Specific epic ID | all epics |
-| `--perspective` | Epic breakdown focus (engineering, product, test) | balanced |
-| `--story` | Specific story ID | auto-select |
-| `--bug` | Specific bug ID | auto-select |
-| `--cr` | Specific change request ID | auto-select |
-| `--severity` | Bug severity filter (critical, high, medium, low) | all |
-| `--spec` | Specific test spec ID (for test-automation) | all specs |
-| `--type` | Test type filter (unit, integration, api, e2e) | all types |
-| `--framework` | Override framework detection | auto-detect |
-| `--personas` | Personas directory path | sdlc-studio/personas/ |
-| `--from-prd` | Generate personas from PRD (persona generate) | - |
-| `--from-code` | Generate personas from codebase (persona generate) | - |
-| `--with-personas` | Force persona consultation in workflows | false |
-| `--skip-personas` | Skip persona consultation in workflows | false |
-| `--workshop` | Multi-persona discussion (chat) | - |
-| `--amigos` | Three Amigos participants (chat/consult) | false |
-| `--context` | Load artefact for context (chat) | - |
-| `--force` | Overwrite existing files | false |
-| `--no-fix` | Report without auto-fixing (code check, review) | false |
-| `--scope` | Reconcile scope: epics, stories, prd, indexes (reconcile) | all |
-| `--verbose` | Detailed test output | false |
-| `--env` | Test environment (local, docker) | local |
-| `--plan` | Specific plan ID (for implement) | auto-select |
-| `--tdd` | Force TDD mode (for implement) | plan recommendation |
-| `--no-tdd` | Force Test-After mode (for implement) | plan recommendation |
-| `--docs` | Update documentation (for implement) | true |
-| `--no-docs` | Skip documentation updates (for implement) | false |
-| `--from-phase` | Resume workflow from phase N (for story implement) | 1 |
-| `--skip` | Skip specific story (for epic implement) | none |
-| `--agentic` | Autonomous epic/project execution with concurrent story waves | false |
-| `--no-artifacts` | Suppress plan/test-spec/workflow file creation (agentic mode only) | false |
-| `--commit-strategy` | Commit granularity: `per-wave`, `per-epic` (default), `per-project` | per-epic |
-| `--from` | Generation starting point for project implement: `stories`, `epics` | none |
-| `--yes` | Auto-approve generated artifacts (skip pause after `--from`) | false |
-| `--dry-run` | Preview changes without applying (for refactor) | false |
-| `--focus` | Review focus area (patterns, security, performance, testing, all) | all |
-| `--severity` | Minimum severity to report (for review) | all |
-| `--quick` | Use cached status results (for status), skip cascade (for epic review) | varies |
-| `--full` | Run fresh status analysis | false |
-| `--resume` | Resume cascading review from pause point | false |
+approach decisions. The full index is in `help/references.md`.
 
 ## Type Reference
 
@@ -245,407 +177,19 @@ approach decisions.
 | `hint` | Single actionable next step |
 | `help` | Show command reference and examples |
 
-## Command Reference
+## Full Reference
 
-### Pipeline Status
+The catalogues that used to live inline are now loaded on demand to keep this router lean:
 
-| Command | Description |
+| You need... | Read |
 | --- | --- |
-| `/sdlc-studio status` | Visual dashboard (quick mode, uses cache) |
-| `/sdlc-studio status --full` | Full refresh, updates cache |
-| `/sdlc-studio status --testing` | Tests pillar only |
-| `/sdlc-studio status --workflows` | Workflow state only |
-| `/sdlc-studio status --brief` | One-line summary |
-
-**Four Pillars:**
-
-- 📋 **Requirements** (PRD Status) - PRD, Personas, Epics, Stories
-- 💻 **Code** (TRD Status) - TRD, Lint, TODOs
-- 🧪 **Tests** (TSD Status) - Coverage, E2E features
-- 🔍 **Reviews** - Review currency, findings status
-
-### Reconciliation
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio reconcile` | Detect and fix all status drift |
-| `/sdlc-studio reconcile --dry-run` | Preview fixes without applying |
-| `/sdlc-studio reconcile --scope epics` | Reconcile epics only |
-| `/sdlc-studio reconcile --scope stories` | Reconcile stories only |
-| `/sdlc-studio reconcile --scope prd` | Reconcile PRD only |
-| `/sdlc-studio reconcile --verify` | Run AC verifiers and update Verified state |
-| `/sdlc-studio reconcile --verify --story US0001` | Verify a single story |
-| `/sdlc-studio reconcile --verify --dry-run` | Preview verification without writes |
-
-### Requirements Pipeline
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio init` | Initialise project context and config |
-| `/sdlc-studio upgrade` | Upgrade project to latest schema version |
-| `/sdlc-studio upgrade --dry-run` | Preview upgrade changes without applying |
-| `/sdlc-studio review` | Unified PRD, TRD, TSD review |
-| `/sdlc-studio review --quick` | Fast review using cached data |
-| `/sdlc-studio review --focus {doc}` | Review specific document (prd, trd, tsd) |
-| `/sdlc-studio hint` | Get single actionable next step |
-| `/sdlc-studio help` | Show command reference and examples |
-| `/sdlc-studio prd` | Ask which mode (create/generate/review) |
-| `/sdlc-studio prd create` | Interactive PRD creation |
-| `/sdlc-studio prd generate` | **Extract PRD from codebase** (brownfield) |
-| `/sdlc-studio prd review` | Review PRD against codebase, update status |
-| `/sdlc-studio epic` | Generate Epics from PRD |
-| `/sdlc-studio epic review` | Cascading review (use `--quick` or `--resume`) |
-| `/sdlc-studio story` | Generate User Stories from Epics |
-| `/sdlc-studio story generate` | **Extract detailed specs from CODE** (brownfield) |
-| `/sdlc-studio story review` | Review Story status from codebase |
-| `/sdlc-studio persona` | Ask which mode (create/generate/review) |
-| `/sdlc-studio persona create` | Interactive persona creation (Team or Stakeholder) |
-| `/sdlc-studio persona generate` | Reverse engineer from `--from-prd`, `--from-code`, `--from-docs` |
-| `/sdlc-studio persona list` | Show all project personas by category |
-| `/sdlc-studio persona import/export` | Import or export persona markdown files |
-| `/sdlc-studio persona review` | Review and refine existing personas |
-
-### Persona Consultation & Chat
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio consult [persona] [artefact]` | Get structured feedback from persona |
-| `/sdlc-studio consult team [artefact]` | Three Amigos review |
-| `/sdlc-studio consult stakeholders [artefact]` | All stakeholder personas |
-| `/sdlc-studio chat [persona]` | Interactive chat session |
-| `/sdlc-studio chat --workshop [topic]` | Multi-persona discussion (see `help/chat.md`) |
-
-### Technical Requirements
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio trd` | Ask which mode (create/generate/review) |
-| `/sdlc-studio trd create` | Interactive TRD creation |
-| `/sdlc-studio trd generate` | **Extract TRD from architecture** (brownfield) |
-| `/sdlc-studio trd review` | Review TRD against implementation |
-| `/sdlc-studio trd visualise` | Regenerate C4 architecture diagrams |
-| `/sdlc-studio trd containerize` | Add container design decisions to TRD |
-
-### Bug Tracking
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio bug` | Create new bug (interactive) |
-| `/sdlc-studio bug list` | List all bugs |
-| `/sdlc-studio bug list --status open` | List open bugs |
-| `/sdlc-studio bug list --severity critical` | List critical bugs |
-| `/sdlc-studio bug list --epic EP0001` | List bugs for epic |
-| `/sdlc-studio bug fix --bug BG0001` | Start fixing a bug |
-| `/sdlc-studio bug verify --bug BG0001` | Verify bug fix |
-| `/sdlc-studio bug close --bug BG0001` | Close a bug |
-| `/sdlc-studio bug reopen --bug BG0001` | Reopen a closed bug |
-
-### Change Management
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio cr` | Ask what to do (create, list, action, review, close) |
-| `/sdlc-studio cr create` | Interactive CR creation |
-| `/sdlc-studio cr list` | List all change requests |
-| `/sdlc-studio cr list --status proposed` | List proposed CRs |
-| `/sdlc-studio cr list --priority P1` | List P1 change requests |
-| `/sdlc-studio cr action --cr CR-0001` | Turn CR into epics and stories |
-| `/sdlc-studio cr review` | Review CR statuses against implementation |
-| `/sdlc-studio cr sync` | Two-way sync CRs with GitHub Issues |
-| `/sdlc-studio cr sync --dry-run` | Preview sync without writes |
-| `/sdlc-studio cr close --cr CR-0001` | Mark CR complete/rejected/deferred |
-
-### Design Exploration (RFC)
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio rfc` | Ask what to do (create, list, review, accept, close) |
-| `/sdlc-studio rfc create` | Draft a new RFC (unsettled design – options + open decisions) |
-| `/sdlc-studio rfc list` | List RFCs (filter `--status`, `--priority`, `--author`) |
-| `/sdlc-studio rfc review` | Flag stalled RFCs + unresolved open decisions |
-| `/sdlc-studio rfc accept --rfc RFC-0001` | Record the decision + spawn/link the workstream CRs |
-| `/sdlc-studio rfc close --rfc RFC-0001` | Supersede or withdraw an RFC |
-
-### Development Pipeline
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio code plan` | Plan next incomplete story |
-| `/sdlc-studio code plan --story US0001` | Plan specific story |
-| `/sdlc-studio code plan --epic EP0001` | Plan next story in epic |
-| `/sdlc-studio code implement` | Implement next planned story |
-| `/sdlc-studio code implement --plan PL0001` | Implement specific plan |
-| `/sdlc-studio code implement --story US0001` | Implement by story |
-| `/sdlc-studio code implement --tdd` | Force TDD mode |
-| `/sdlc-studio code implement --no-docs` | Skip doc updates |
-| `/sdlc-studio code refactor` | Guided refactoring workflow |
-| `/sdlc-studio code refactor --type extract-method` | Apply specific refactoring |
-| `/sdlc-studio code review` | Design pattern and quality review |
-| `/sdlc-studio code review --story US0001` | Review specific story implementation |
-| `/sdlc-studio code verify` | Verify next In Progress story |
-| `/sdlc-studio code verify --story US0001` | Verify specific story |
-| `/sdlc-studio code test` | Run all tests |
-| `/sdlc-studio code test --epic EP0001` | Run tests for specific epic |
-| `/sdlc-studio code test --story US0001` | Run tests for specific story |
-| `/sdlc-studio code test --type unit` | Run only unit tests |
-| `/sdlc-studio code check` | Run linters with auto-fix |
-| `/sdlc-studio code check --no-fix` | Check only, no changes |
-
-### Testing Pipeline
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio tsd` | Create test strategy document |
-| `/sdlc-studio tsd generate` | Infer strategy from codebase |
-| `/sdlc-studio tsd review` | Review and update strategy |
-| `/sdlc-studio test-spec` | Generate test specs from epics/stories |
-| `/sdlc-studio test-spec --epic EP0001` | Generate for specific Epic |
-| `/sdlc-studio test-spec generate` | Reverse-engineer from existing tests |
-| `/sdlc-studio test-spec review` | Sync automation status |
-| `/sdlc-studio test-automation` | Generate executable tests |
-| `/sdlc-studio test-automation --spec TS0001` | Generate for specific spec |
-| `/sdlc-studio test-automation --type unit` | Generate only unit tests |
-| `/sdlc-studio test-env setup` | Generate docker-compose.test.yml |
-| `/sdlc-studio test-env up` | Start test environment |
-| `/sdlc-studio test-env down` | Stop test environment |
-| `/sdlc-studio test-env status` | Check environment health |
-
-### Workflow Automation
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio story plan --story US0001` | Create plan + test-spec, then review |
-| `/sdlc-studio story implement --story US0001` | Execute story workflow (with state tracking) |
-| `/sdlc-studio story implement --tdd` | Execute with TDD approach |
-| `/sdlc-studio story implement --from-phase 3` | Resume from phase |
-| `/sdlc-studio epic plan --epic EP0001` | Preview epic workflow |
-| `/sdlc-studio epic plan --epic EP0001 --agentic` | Preview with agentic wave analysis |
-| `/sdlc-studio epic implement --epic EP0001` | Execute epic workflow |
-| `/sdlc-studio epic implement --epic EP0001 --agentic` | Execute with agentic waves |
-| `/sdlc-studio epic implement --story US0001` | Resume from story |
-| `/sdlc-studio epic implement --skip US0001` | Skip specific story |
-| `/sdlc-studio project plan` | Preview project execution plan (all epics) |
-| `/sdlc-studio project plan --agentic` | Preview with agentic wave estimates |
-| `/sdlc-studio project implement` | Execute all epics in dependency order |
-| `/sdlc-studio project implement --agentic` | Agentic waves within each epic |
-| `/sdlc-studio project implement --agentic --no-artifacts` | Fast mode: no PL/TS/WF files |
-| `/sdlc-studio project implement --from stories` | Generate stories first, then implement |
-| `/sdlc-studio project implement --resume EP0003` | Resume from specific epic |
-
-**State tracking:** `story implement` creates `sdlc-studio/workflows/WF{NNNN}.md` to track progress across sessions. `project implement` creates `sdlc-studio/.local/project-state.json` for cross-epic progress.
-
-### Utilities
-
-Skill-internal helpers live at `.claude/skills/sdlc-studio/scripts/`. Claude invokes these on behalf of workflows; users do not call them directly. See `reference-scripts.md` for the full catalogue.
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio repo map build` | Index the repository symbols and imports |
-| `/sdlc-studio repo map build --ignore vendor` | Skip an extra directory during indexing |
-| `/sdlc-studio repo map query --story US0001` | Rank files by relevance to a story |
-| `/sdlc-studio repo map query --story "auth flow"` | Rank files by a free-text query |
-| `/sdlc-studio repo map stats` | Index size and top-10 hub files |
-| `/sdlc-studio lessons list` | Print accumulated project lessons |
-| `/sdlc-studio lessons add` | Append a new lesson to .local/lessons.md |
-| `/sdlc-studio lessons prune --older EP0003` | Drop entries for old epics |
-
-### External Integrations
-
-Two-way sync between local records and external trackers. v1.6.0 ships GitHub Issues; Linear, Jira, and GitHub Projects board integration are deferred. Requires `gh` CLI installed and authenticated. See `reference-github-sync.md`.
-
-| Command | Description |
-| --- | --- |
-| `/sdlc-studio cr sync` | Push + pull CRs to/from GitHub Issues |
-| `/sdlc-studio story sync` | Push + pull Stories to/from GitHub Issues |
-| `/sdlc-studio project sync` | Sync all three types (cr, story, epic) |
-| `/sdlc-studio project sync push --type all` | Push only |
-| `/sdlc-studio project sync pull --type cr` | Pull only |
-| `/sdlc-studio project sync cascade` | Merged-PR cascade candidates |
-| `/sdlc-studio project sync cascade --since <iso>` | Limit PR window |
-| `/sdlc-studio project sync state` | Print sync state file |
-
-## Workflows
-
-For detailed step-by-step workflows, see reference files:
-
-- `reference-prd.md`, `reference-trd.md`, `reference-persona.md` - PRD, TRD, Persona workflows
-- `reference-epic.md`, `reference-story.md`, `reference-bug.md` - Epic, Story, Bug workflows
-- `reference-project.md` - Project-level orchestration across all epics
-- `reference-code.md` - Code plan, implement, verify, check, test workflows
-- `reference-refactor.md` - Code refactor, review workflows
-- `reference-tsd.md` - TSD, status dashboard workflows
-- `reference-test-spec.md` - Test specification workflows
-- `reference-test-automation.md` - Test automation, test environment workflows
-
----
+| Every command, grouped by pipeline, with examples | `help/help.md` (or run `/sdlc-studio help`) |
+| The complete argument and flag table | `help/arguments.md` |
+| Workflow diagrams (greenfield, brownfield, agentic, project) | `help/help.md` "Typical Workflows" |
+| The full `reference-*.md` index and template structure | `help/references.md` |
+| Type-specific commands, prerequisites, output, examples | `help/{type}.md` |
+| Step-by-step workflow detail for an artifact | `reference-{domain}.md` |
 
 ## Error Handling
 
 **Missing prerequisites:** Prompts to run earlier pipeline step (e.g., no PRD → `prd`, no epics → `epic`, no stories → `story`, no plans → `code plan`). **Existing files:** Warns and asks to continue unless `--force`. **No type:** Asks user which type. **ID collision:** Auto-increments. **Open questions:** Reports and pauses. **Unknown language:** Asks user to specify framework.
-
-## Typical Workflow
-
-### Greenfield (Create Mode)
-
-```text
-
-PRD → TRD → Personas → Epics → Stories
-                                  │
-                    ┌─────────────┴─────────────┐
-                    │                           │
-              TDD Path                    Test-After Path
-              (test-first)                (code-first)
-                    │                           │
-              test-spec                    code plan
-                    │                           │
-              code plan                   code implement
-                    │                           │
-         code implement --tdd              test-spec
-                    │                           │
-              code verify                 test-automation
-                    │                           │
-              code test                     code verify
-                                                │
-                                            code test
-```
-
-**Per-story choice:** You choose TDD or Test-After for each story, not globally. Both paths produce the same artifacts, just in different order.
-
-### Automated Workflow (Recommended)
-
-For streamlined development, use workflow automation:
-
-```text
-
-PRD → TRD → Personas → Epics → Stories
-                                  │
-                          story plan --story US0001
-                                  │
-                          story implement --story US0001
-                                  │
-                          (all 7 phases run automatically)
-```
-
-Or at the epic level:
-
-```text
-
-PRD → TRD → Personas → Epics → Stories
-                                  │
-                          epic plan --epic EP0001
-                                  │
-                          epic implement --epic EP0001
-                                  │
-                          (all stories processed in dependency order)
-```
-
-Or with autonomous execution for maximum throughput:
-
-```text
-
-PRD → TRD → Personas → Epics → Stories
-                                  │
-                       epic plan --epic EP0001 --agentic
-                                  │
-                    (analyses dependencies → assigns concurrent waves)
-                                  │
-                       epic implement --epic EP0001 --agentic
-                                  │
-                    Wave 1: [US0001, US0003] concurrent
-                    Wave 2: [US0002, US0004] concurrent
-                    Wave 3: [US0005] sequential (hub file conflict)
-```
-
-`--agentic` analyses the dependency graph and hub file overlap to identify stories that can safely execute concurrently. Falls back to sequential for any stories with shared file conflicts.
-
-**Workflow phases per story:**
-
-1. Plan (code plan)
-2. Test Spec (test-spec)
-3. Tests (test-automation)
-4. Implement (code implement)
-5. Test (code test)
-6. Verify (code verify)
-7. Check (code check)
-8. Review (status review)
-
-### Project Implementation (Full PRD in One Pass)
-
-For implementing an entire PRD across all epics with maximum throughput:
-
-```text
-
-PRD → TRD → Personas → Epics → Stories
-                                  │
-                    project plan --agentic
-                                  │
-                    project implement --agentic --no-artifacts
-                                  │
-                    EP0001: epic implement --agentic
-                        → commit → reconcile
-                    EP0002: epic implement --agentic
-                        → commit → reconcile
-                    EP0003: epic implement --agentic
-                        → commit → reconcile → review (every 3 epics)
-                    ...
-                    Final: review → reconcile → report
-```
-
-**Quality gates enforced at every boundary:**
-
-- Wave: typecheck + test suite
-- Epic: reconcile + status cascade + commit
-- Every 3 epics: quick review
-- Project: full review + reconcile + code check
-
-See `reference-project.md` for the full workflow.
-
-### Brownfield (Specification Extraction)
-
-```bash
-
-prd generate → trd generate → persona generate → epic → story generate → test-spec → test-automation → code test (VALIDATE)
-```
-
-**Critical:** The `code test` step validates specs against reality. Not optional.
-
-### Development Cycle
-
-```text
-
-code plan → code implement → code test → code verify → code check
-```
-
-Status: `Draft/Ready → Planned → In Progress → Review → Done`
-
-### Daily Usage
-
-```bash
-
-/sdlc-studio status          # Visual dashboard - what needs attention?
-/sdlc-studio status --brief  # Quick: Requirements 85% | Code 90% | Tests 94%
-/sdlc-studio hint            # Single next step
-/sdlc-studio code plan       # Plan next story
-/sdlc-studio code implement  # Execute plan
-```
-
-## See Also
-
-**Philosophy:** `reference-philosophy.md` - **Read this first.** Explains Create vs Generate modes and why generate mode produces migration blueprints, not documentation.
-
-**Decisions:** `reference-decisions.md` - Decision impact matrix, TDD decision tree, Ready status criteria, cross-stage validation checkpoints.
-
-**Configuration:** `reference-config.md` - Project configuration options for coverage targets, story quality gates, and thresholds.
-
-**Help:** `help/help.md` (main), `help/{type}.md` (type-specific), `help/upgrade.md` (schema upgrade), `help/reconcile.md` (status reconciliation)
-
-**References:** `reference-prd.md`, `reference-trd.md`, `reference-persona.md`, `reference-persona-generate.md`, `reference-consult.md`, `reference-chat.md`, `reference-workflow-personas.md` (Requirements), `reference-epic.md`, `reference-story.md`, `reference-bug.md`, `reference-cr.md` (Specifications), `reference-architecture.md` (Architecture), `reference-code.md` (Code, Test), `reference-refactor.md` (Refactoring, Review), `reference-review.md` (Unified document review), `reference-project.md` (Project orchestration), `reference-agentic-lessons.md` (Production lessons for agentic execution), `reference-operator-heuristics.md` (Cross-cutting operator patterns: memory-drift, incident localisation, release-gate), `reference-tsd.md`, `reference-test-spec.md`, `reference-test-automation.md` (Test artifacts), `reference-test-best-practices.md` (Test pitfalls), `reference-test-e2e-guidelines.md` (E2E patterns), `reference-upgrade.md` (Schema migration), `reference-reconcile.md` (Status reconciliation), `reference-repo-map.md` (AST repo indexer), `reference-verify.md` (Executable AC verifier DSL), `reference-github-sync.md` (GitHub Issues two-way sync), `reference-scripts.md` (Skill-internal scripts convention), `reference-doctrine.md` (Operating doctrine), `reference-deploy-readiness.md` (Deploy readiness patterns), `reference-rfc.md` (RFC design exploration), `reference-plan-files.md` (Plan-file lifecycle)
-
-**Templates (v2 modular structure):**
-
-- Core: `templates/core/*.md` (prd, trd, tsd, epic, story, plan, test-spec, bug, cr)
-- Personas: `templates/personas/` (persona-template, archetypes by category)
-- Indexes: `templates/indexes/*.md` (epic, story, plan, bug, test-spec, review)
-- Modules: `templates/modules/trd/*.md` (c4-diagrams, container-design, adr), `templates/modules/tsd/*.md` (contract-tests, performance-tests, security-tests), `templates/modules/epic/*.md` (engineering-view, product-view, test-view)
-- Config: `templates/config-defaults.yaml`, `templates/config.yaml`, `templates/version.yaml`
-- Automation: `templates/automation/*.template` (pytest, jest, vitest, go, xunit, junit)
